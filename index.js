@@ -90,3 +90,14 @@ const askQuestion = () => {
         viewDepartment();
       });
   };
+
+  const viewDepartment = () => {
+    const query = 'SELECT * FROM departments';
+      connection.query(query, function(err, res){
+        res.forEach(departments => {
+          `${departments.id}, ${departments.name}`;
+        })
+        printTable(res);
+        askQuestion();
+      });
+  };
