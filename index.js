@@ -1,7 +1,9 @@
+// Add required npm packages
 const mysql = require('mysql');
 const inquirer = require('inquirer');
 const { printTable } = require('console-table-printer');
 
+// Create connection to workbench
 const connection = mysql.createConnection({
     host: 'localhost',
 
@@ -13,11 +15,13 @@ const connection = mysql.createConnection({
     database: 'employee_trackerDB',
 });
 
+// Connection with inquirer
 connection.connect((err) => {
     if(err) throw err;
     askQuestion();
 });
 
+// Prompts for options of what user can do with the database
 const askQuestion = () => {
     inquirer
       .prompt({
@@ -76,6 +80,7 @@ const askQuestion = () => {
       });
   };
 
+// Add new department to database
   const addDepartment = () => {
     inquirer
       .prompt({
@@ -91,6 +96,7 @@ const askQuestion = () => {
       });
   };
 
+// Views list of added departments and prints table
   const viewDepartment = () => {
     const query = 'SELECT * FROM departments';
       connection.query(query, function(err, res){
@@ -102,6 +108,7 @@ const askQuestion = () => {
       });
   };
 
+// Views added roles and prints a table in terminal
   const viewRole = () => {
     const query = 'SELECT * FROM roles';
     connection.query(query, function(err, res){
@@ -113,6 +120,7 @@ const askQuestion = () => {
     });
   };
 
+// Views existing employees in a table
   const viewEmployee = () => {
     const query = 'SELECT * FROM employees';
     connection.query(query, function(err, res){
@@ -124,6 +132,7 @@ const askQuestion = () => {
     });
   };
 
+// Adds new roles with prompted questions and generates table. (map to call on previous function)
   const addRole = () => {
     const query = `SELECT * FROM departments`;
   
@@ -164,6 +173,7 @@ const askQuestion = () => {
       })
       };
 
+// Adds new employees with prompted questions and generates table to view all employees. (map to call on previous functions).
       const addEmployee = () => {
         const query = `SELECT * FROM roles`;
         
@@ -219,3 +229,5 @@ const askQuestion = () => {
           })
           })
           };
+
+// Update employee roles 
