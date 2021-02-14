@@ -231,3 +231,34 @@ const askQuestion = () => {
           };
 
 // Update employee roles 
+const updateEmployee = () => {
+  
+    const query = `SELECT * FROM employees`;
+  
+    connection.query(query, function (err, res) {
+      if(err) throw err;
+      const employeeChoices = res.map(({ id, first_name, last_name }) => ({
+        value: id,
+        name: `${id} ${first_name} ${last_name}`
+      }));
+  
+    inquirer
+      .prompt([{
+        name: 'updateOption',
+        type: 'list',
+        message: 'What employee would you like to update?',
+        choices: employeeChoices
+      },
+      {
+        name: 'update',
+        type: 'list',
+        message: 'What would like to change?',
+        choices: [`${first_name}, ${last_name}, ${role_id}, ${manager_id}`]
+      },
+    ])
+    .then((answer) => {
+      connection.query(`UPDATE employeees SET (??) = (?) WHERE (??) = (?)`)
+    })
+    })
+  
+  }
