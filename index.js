@@ -101,3 +101,14 @@ const askQuestion = () => {
         askQuestion();
       });
   };
+
+  const viewRole = () => {
+    const query = 'SELECT * FROM roles';
+    connection.query(query, function(err, res){
+      res.forEach(roles => {
+        `${roles.id}, ${roles.title}, ${roles.salary}, ${roles.department_id}`;
+      })
+      printTable(res);
+      askQuestion();
+    });
+  };
