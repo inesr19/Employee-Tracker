@@ -75,3 +75,18 @@ const askQuestion = () => {
        }
       });
   };
+
+  const addDepartment = () => {
+    inquirer
+      .prompt({
+        name: 'department',
+        type: 'input',
+        message: 'What is the name of the department?',
+      })
+      .then((answer) => {
+        const query = 'INSERT INTO departments (name) VALUES ( ? )';
+        connection.query(query, answer.department, function(err, res) {
+        })
+        viewDepartment();
+      });
+  };
