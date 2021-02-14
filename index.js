@@ -123,3 +123,43 @@ const askQuestion = () => {
       askQuestion();
     });
   };
+
+  const addRole = () => {
+    const query = `SELECT * FROM departments`;
+  
+    connection.query(query, function (err, res){
+      if(err) throw err;
+      const departmentChoices = res.map(({ id, name }) => ({
+        value: id,
+        name: `${id} ${name}`
+      }));
+  
+    inquirer
+      .prompt([{
+        name: 'title',
+        type: 'input',
+        message: 'What is the title of the role?',
+      },
+      {
+        name: 'salary',
+        type: 'input',
+        message: 'What is the salary of this role?'
+      },
+      {
+        name: 'department_id',
+        type: 'list',
+        message: 'What department is this role in?',
+        choices: departmentChoices
+      },
+      ])
+      .then((answer) => {
+         connection.query(`INSERT INTO roles (title, salary, department_id) VALUES ("${answer.title}", ${answer.salary}, ${answer.department_id})`, (err, res) => {
+            if (err) throw err;
+  
+            
+            viewRole();
+            askQuestion();
+         })
+       })
+      })
+      };
