@@ -12,3 +12,66 @@ const connection = mysql.createConnection({
     password: '',
     database: 'employee_trackerDB',
 });
+
+connection.connect((err) => {
+    if(err) throw err;
+    askQuestion();
+});
+
+const askQuestion = () => {
+    inquirer
+      .prompt({
+        name: 'action',
+        type: 'list',
+        message: 'What would you like to do?',
+        choices: [
+          'Add a department',
+          'Add a role',
+          'Add an employee',
+          'View departments',
+          'View roles',
+          'View employees',
+          'Update employee role',
+          'Exit',
+        ],
+      })
+      .then((answer) => {
+        switch (answer.action) {
+          case 'Add a department':
+            addDepartment();
+            break;
+  
+          case 'Add a role':
+            addRole();
+            break;
+  
+          case 'Add an employee':
+            addEmployee();
+            break;
+                    
+          case 'View departments':
+            viewDepartment();
+            break;
+  
+          case 'View roles':
+            viewRole();
+            break;
+  
+          case 'View employees':
+            viewEmployee();
+            break;
+  
+          case 'Update employee role':
+            updateEmployee();
+            break;
+  
+          case 'Exit':
+            connection.end();
+            break;
+  
+        default:
+          console.log(`Invalid action: ${answer.action}`);
+          break;
+       }
+      });
+  };
