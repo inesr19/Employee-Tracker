@@ -112,3 +112,14 @@ const askQuestion = () => {
       askQuestion();
     });
   };
+
+  const viewEmployee = () => {
+    const query = 'SELECT * FROM employees';
+    connection.query(query, function(err, res){
+      res.forEach(employees => {
+        `${employees.id}, ${employees.first_name}, ${employees.last_name}, ${employees.role_id}, ${employees.manager_id}`;
+      })
+      printTable(res);
+      askQuestion();
+    });
+  };
