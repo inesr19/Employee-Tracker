@@ -163,3 +163,59 @@ const askQuestion = () => {
        })
       })
       };
+
+      const addEmployee = () => {
+        const query = `SELECT * FROM roles`;
+        
+        connection.query(query, function (err, res) {
+          if(err) throw err;
+          const roleChoices = res.map(({ id, title }) => ({
+            value: id,
+            name: `${id} ${title}`
+          }));
+  
+          const managerQuery = `SELECT * FROM employees`;
+  
+          connection.query(managerQuery, function (err, res) {
+            if(err) throw err;
+            const managerChoices = res.map(({ id, first_name, last_name }) => ({
+              value: id,
+              name: `${id} ${first_name} ${last_name}`
+            }));
+        
+        inquirer
+          .prompt([{
+            name: 'first_name',
+            type: 'input',
+            message: 'What is the first name of the employee?',
+          },
+          {
+            name: 'last_name',
+            type: 'input',
+            message: 'What is the last name of the employee?'
+          },
+          {
+            name: 'role_id',
+            type: 'list',
+            message: 'What is the role of the employee?',
+            choices: roleChoices
+          },
+          {
+            name: 'manager_id',
+            type: 'list',
+            message: 'Who is the manager?',
+            choices: managerChoices
+          },
+          ])
+          .then((answer) => {
+             connection.query(`INSERT INTO employees (first_name, last_name, role_id,  manager_id) VALUES ("${answer.first_name}", "${answer.last_name}", ${answer.role_id}, ${answer.manager_id})`, (err, res) => {
+                if (err) throw err;
+      
+                
+                viewEmployee();
+                askQuestion();
+             })
+           })
+          })
+          })
+          };
